@@ -1,0 +1,44 @@
+A51 MACRO ASSEMBLER  PEP_LAB_01_B0829002                                                  09/07/2023 16:53:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN Pep_Lab_01_B0829002.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE Pep_Lab_01_B0829002.asm XR GEN DB EP NOMOD51 INCDIR(C:\SiLabs\MCU_2\Inc) 
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0x0000 
+0000 7820              2     MOV R0, #20h ;
+0002 7928              3     MOV R1, #28h ;
+0004 7C08              4     MOV R4, #8 ;
+0006 7D00              5     MOV R5, #0 ; summary
+                       6     
+0008                   7     Matrix_LOOP:
+0008 E6                8             MOV A, @R0;
+0009 87F0              9             MOV B, @R1;
+000B A4               10             MUL AB;
+000C 2D               11             ADD A, R5;
+000D FD               12             MOV R5, A;
+000E 08               13             INC R0;
+000F 09               14             INC R1;
+0010 DCF6             15             DJNZ R4, Matrix_LOOP;
+                      16     
+0012 80FE             17     HERE:SJMP HERE
+                      18     END
+A51 MACRO ASSEMBLER  PEP_LAB_01_B0829002                                                  09/07/2023 16:53:52 PAGE     2
+
+XREF SYMBOL TABLE LISTING
+---- ------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES / REFERENCES
+
+B. . . . . . . . .  D ADDR   00F0H   A      9
+HERE . . . . . . .  C ADDR   0012H   A      17# 17
+MATRIX_LOOP. . . .  C ADDR   0008H   A      7# 15
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

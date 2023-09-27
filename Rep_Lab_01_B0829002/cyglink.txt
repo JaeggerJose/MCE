@@ -1,0 +1,1 @@
+"C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002.obj"  TO "C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002" RS(256) PL(68) PW(78)  

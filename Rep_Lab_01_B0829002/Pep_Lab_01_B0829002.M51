@@ -1,0 +1,62 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0          09/07/2023  16:53:52  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002.
+>> obj TO C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002 RS (256) PL (68) P
+>> W (78)
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002.obj (PEP_LAB_01_B0829002)
+
+
+LINK MAP OF MODULE:  C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002 (PEP_LA
+>> B_01_B0829002)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0014H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\88698\Documents\Lab1\Pep_Lab_01_B0829002 (PE
+>> P_LAB_01_B0829002)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PEP_LAB_01_B0829002
+  D:00F0H         SYMBOL        B
+  C:0012H         SYMBOL        HERE
+  C:0008H         SYMBOL        MATRIX_LOOP
+  C:0000H         LINE#         2
+  C:0002H         LINE#         3
+  C:0004H         LINE#         4
+  C:0006H         LINE#         5
+  C:0008H         LINE#         8
+  C:0009H         LINE#         9
+  C:000BH         LINE#         10
+  C:000CH         LINE#         11
+  C:000DH         LINE#         12
+  C:000EH         LINE#         13
+  C:000FH         LINE#         14
+  C:0010H         LINE#         15
+  C:0012H         LINE#         17
+  -------         ENDMOD        PEP_LAB_01_B0829002
+
+******************************************************************************
+>> 
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0014H BYTE ( 0%) *
+>> 
+******************************************************************************
+>> 
+
+Program Size: data=8.0 xdata=0 code=20
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
