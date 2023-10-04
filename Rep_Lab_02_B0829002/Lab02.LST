@@ -1,0 +1,167 @@
+A51 MACRO ASSEMBLER  LAB02                                                                09/21/2023 15:04:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN Lab02.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE Lab02.asm XR GEN DB EP NOMOD51 INCDIR(C:\SiLabs\MCU\Inc) 
+
+LOC  OBJ            LINE     SOURCE
+
+  00E3                 1     XBR2                    equ             0e3h
+  00AD                 2     P1MDIN                  equ             0adh
+  00A6                 3     P2MDOUT                 equ             0a6h
+  00FF                 4     WDTCN                   equ             0ffh
+  0084                 5     SFRPAGE                 equ             084h
+  0090                 6     P1                              equ             090h
+  00A0                 7     P2                              equ             0a0h
+                       8     
+  000F                 9     CONFIG_PAGE             equ             0fh
+  0000                10     LEGACY_PAGE             equ             00h
+                      11     
+                      12                                     
+0000 75FFDE           13                                     mov             WDTCN, #0deh
+0003 75FFAD           14                                     mov             WDTCN, #0adh
+                      15     
+                      16                                     
+0006 75840F           17                                     mov             SFRPAGE, #CONFIG_PAGE
+0009 75E3C0           18                                     mov             XBR2, #0c0h
+000C 75ADFF           19                                     mov             P1MDIN, #0ffh
+000F 75A6FF           20                                     mov             P2MDOUT, #0ffh
+0012 758400           21                                     mov             SFRPAGE, #LEGACY_PAGE
+                      22                                     
+0015 759000           23                                     mov   P1, #00000000h  
+0018 75A000           24                                     mov     P2, #00000000h   
+                      25     
+001B 7880             26                                     mov     R0,     #10000000b 
+001D 75F000           27                                     mov             B,      #00000000b
+                      28     
+                      29                                     
+0020 752000           30                                     mov   20h, #0
+0023 759000           31                                     mov   P1, #0
+0026 7900             32                                     mov             R1,     #0
+0028 7A00             33                                     mov     R2,     #0
+002A                  34     Loop_Begin:
+002A 120071           35                                     lcall handleOnclick
+                      36                                     
+002D A920             37                                     mov     R1,     20h
+002F E9               38                                     mov             A,      R1
+                      39     
+0030                  40                                     rightRotate:
+0030 B4010C           41                                             cjne    A,      #1,     leftRotate  
+0033 120096           42                                             lcall   Delay
+0036 FB               43                                             mov             R3,     A
+0037 E8               44                                             mov     A,      R0
+0038 03               45                                             rr    A
+0039 F5A0             46                                             mov             P2, A
+003B F8               47                                             mov             R0,     A
+003C 02002A           48                                             ljmp    Loop_Begin      
+                      49     
+                      50                                     
+003F                  51                                     leftRotate:
+003F B4020C           52                                             cjne    A,      #2,     evenBlink  
+0042 120096           53                                             lcall   Delay
+0045 FB               54                                             mov             R3,     A
+0046 E8               55                                             mov     A,      R0
+0047 23               56                                             rl    A
+0048 F5A0             57                                             mov             P2, A
+004A F8               58                                             mov             R0,     A
+A51 MACRO ASSEMBLER  LAB02                                                                09/21/2023 15:04:04 PAGE     2
+
+004B 02002A           59                                             ljmp    Loop_Begin
+                      60     
+                      61                                     
+004E                  62                                     evenBlink:
+004E B4030D           63                                             cjne    A,      #3,     oddBlink  
+0051 120096           64                                             lcall   Delay
+0054 FB               65                                             mov             R3,     A
+0055 63F055           66                                             xrl   B  ,#01010101b
+0058 85F0A0           67                                             mov             P2, B
+005B 02002A           68                                             ljmp    Loop_Begin      
+                      69                                     
+005E                  70                                     oddBlink:
+005E B4040D           71                                             cjne    A,      #4,     Jump  
+0061 120096           72                                             lcall   Delay
+0064 FB               73                                             mov             R3,     A
+0065 63F0AA           74                                             xrl   B  ,#10101010b
+0068 85F0A0           75                                             mov   P2, B
+006B 02002A           76                                             ljmp    Loop_Begin      
+                      77                                     
+                      78                                     
+006E                  79                                     Jump:
+006E 02002A           80                                             ljmp    Loop_Begin
+                      81     
+                      82     
+0071                  83     handleOnclick:
+0071 A990             84                                     mov             R1,     P1   
+0073 E9               85                                     mov     A,  R1  
+0074                  86             event1:  
+0074 B48004           87                                     cjne    A,      #10000000b,     event2
+0077 752001           88                                     mov   20h,      #1
+007A 22               89                                     ret  
+                      90     
+007B                  91             event2: 
+007B B44004           92                                     cjne    A,      #01000000b,     event3
+007E 752002           93                                     mov     20h,    #2
+0081 22               94                                     ret
+0082                  95             event3: 
+0082 B42007           96                                     cjne    A,      #00100000b,     event4
+0085 752003           97                                     mov     20h,    #3
+0088 75F000           98                                     mov             B,      #0  
+008B 22               99                                     ret
+008C                 100             event4: 
+008C B41006          101                                     cjne    A,      #00010000b,     return
+008F 752004          102                                     mov     20h,    #4
+0092 75F000          103                                     mov             B,      #0  
+                     104     
+0095                 105             return:
+0095 22              106                                     ret
+                     107     
+                     108     ; use the slow down the blick state, due to the cpu clock is quite fast
+0096 7932            109     Delay:  mov R1,#50
+0098 7A1E            110     Delay0: MOV R2, #30
+009A 7BF9            111     Delay1: MOV R3, #249    
+009C DBFE            112     Delay2: DJNZ R3, Delay2
+009E DAFA            113                                     DJNZ R2, Delay1
+00A0 D9F6            114                                     djnz R1, Delay0
+00A2 22              115                                     ret
+                     116     end
+A51 MACRO ASSEMBLER  LAB02                                                                09/21/2023 15:04:04 PAGE     3
+
+XREF SYMBOL TABLE LISTING
+---- ------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES / REFERENCES
+
+B. . . . . . . . .  D ADDR   00F0H   A      27 66 67 74 75 98 103
+CONFIG_PAGE. . . .  N NUMB   000FH   A      9# 17
+DELAY. . . . . . .  C ADDR   0096H   A      42 53 64 72 109#
+DELAY0 . . . . . .  C ADDR   0098H   A      110# 114
+DELAY1 . . . . . .  C ADDR   009AH   A      111# 113
+DELAY2 . . . . . .  C ADDR   009CH   A      112# 112
+EVENBLINK. . . . .  C ADDR   004EH   A      52 62#
+EVENT1 . . . . . .  C ADDR   0074H   A      86#
+EVENT2 . . . . . .  C ADDR   007BH   A      87 91#
+EVENT3 . . . . . .  C ADDR   0082H   A      92 95#
+EVENT4 . . . . . .  C ADDR   008CH   A      96 100#
+HANDLEONCLICK. . .  C ADDR   0071H   A      35 83#
+JUMP . . . . . . .  C ADDR   006EH   A      71 79#
+LEFTROTATE . . . .  C ADDR   003FH   A      41 51#
+LEGACY_PAGE. . . .  N NUMB   0000H   A      10# 21
+LOOP_BEGIN . . . .  C ADDR   002AH   A      34# 48 59 68 76 80
+ODDBLINK . . . . .  C ADDR   005EH   A      63 70#
+P1 . . . . . . . .  N NUMB   0090H   A      6# 23 31 84
+P1MDIN . . . . . .  N NUMB   00ADH   A      2# 19
+P2 . . . . . . . .  N NUMB   00A0H   A      7# 24 46 57 67 75
+P2MDOUT. . . . . .  N NUMB   00A6H   A      3# 20
+RETURN . . . . . .  C ADDR   0095H   A      101 105#
+RIGHTROTATE. . . .  C ADDR   0030H   A      40#
+SFRPAGE. . . . . .  N NUMB   0084H   A      5# 17 21
+WDTCN. . . . . . .  N NUMB   00FFH   A      4# 13 14
+XBR2 . . . . . . .  N NUMB   00E3H   A      1# 18
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
