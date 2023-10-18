@@ -1,0 +1,156 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0          09/28/2023  15:24:22  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\Users\lms02\OneDrive\Dokumete\Lab03\Lab03.obj TO C
+>> :\Users\lms02\OneDrive\Dokumete\Lab03\Lab03 RS (256) PL (68) PW (78)
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\lms02\OneDrive\Dokumete\Lab03\Lab03.obj (LAB03)
+
+
+LINK MAP OF MODULE:  C:\Users\lms02\OneDrive\Dokumete\Lab03\Lab03 (LAB03)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     01A3H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\lms02\OneDrive\Dokumete\Lab03\Lab03 (LAB03)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LAB03
+  D:00F0H         SYMBOL        B
+  C:0180H         SYMBOL        BLINKEVEN
+  C:0123H         SYMBOL        BLINKEVENFUNC
+  C:018AH         SYMBOL        BLINKODD
+  C:012DH         SYMBOL        BLINKODDEVEN
+  N:008EH         SYMBOL        CKCON
+  C:0138H         SYMBOL        CONFIGP
+  C:015CH         SYMBOL        CONFIGT
+  N:000FH         SYMBOL        CONFIG_PAGE
+  C:016FH         SYMBOL        HANDLEONCLICK
+  N:00A8H         SYMBOL        IE
+  C:0137H         SYMBOL        JUMP
+  N:0000H         SYMBOL        LEGACY_PAGE
+  C:0108H         SYMBOL        LOOP
+  C:010EH         SYMBOL        LOOP_BEGIN
+  C:0100H         SYMBOL        MAIN
+  N:0090H         SYMBOL        P1
+  N:00ADH         SYMBOL        P1MDIN
+  N:00A0H         SYMBOL        P2
+  N:00A6H         SYMBOL        P2MDOUT
+  C:019CH         SYMBOL        RESETT
+  C:0194H         SYMBOL        RETURN
+  C:0179H         SYMBOL        ROTATELEFT
+  C:011AH         SYMBOL        ROTATELEFTFUNC
+  C:0172H         SYMBOL        ROTATERIGHT
+  C:0111H         SYMBOL        ROTATERIGHTFUNC
+  N:0084H         SYMBOL        SFRPAGE
+  N:0088H         SYMBOL        TCON
+  N:008CH         SYMBOL        TH0
+  C:0195H         SYMBOL        TIMER0_ISR
+  N:008AH         SYMBOL        TL0
+  N:0089H         SYMBOL        TMOD
+  N:00FFH         SYMBOL        WDTCN
+  N:00E3H         SYMBOL        XBR2
+  C:0000H         LINE#         23
+  C:000BH         LINE#         26
+  C:0100H         LINE#         31
+BL51 BANKED LINKER/LOCATER V6.22.4.0        09/28/2023  15:24:22  PAGE 2
+
+
+  C:0103H         LINE#         32
+  C:0106H         LINE#         33
+  C:0108H         LINE#         36
+  C:010BH         LINE#         37
+  C:010EH         LINE#         42
+  C:0110H         LINE#         45
+  C:0111H         LINE#         47
+  C:0114H         LINE#         48
+  C:0115H         LINE#         49
+  C:0116H         LINE#         50
+  C:0118H         LINE#         51
+  C:0119H         LINE#         52
+  C:011AH         LINE#         54
+  C:011DH         LINE#         55
+  C:011EH         LINE#         56
+  C:011FH         LINE#         57
+  C:0121H         LINE#         58
+  C:0122H         LINE#         59
+  C:0123H         LINE#         61
+  C:0126H         LINE#         62
+  C:0129H         LINE#         63
+  C:012CH         LINE#         64
+  C:012DH         LINE#         66
+  C:0130H         LINE#         67
+  C:0133H         LINE#         68
+  C:0136H         LINE#         69
+  C:0137H         LINE#         71
+  C:0138H         LINE#         75
+  C:013BH         LINE#         76
+  C:013EH         LINE#         79
+  C:0141H         LINE#         80
+  C:0144H         LINE#         81
+  C:0147H         LINE#         82
+  C:014AH         LINE#         83
+  C:014DH         LINE#         85
+  C:0150H         LINE#         87
+  C:0152H         LINE#         88
+  C:0155H         LINE#         91
+  C:0158H         LINE#         92
+  C:015BH         LINE#         93
+  C:015CH         LINE#         96
+  C:015FH         LINE#         97
+  C:0162H         LINE#         98
+  C:0165H         LINE#         99
+  C:0168H         LINE#         100
+  C:016BH         LINE#         101
+  C:016EH         LINE#         102
+  C:016FH         LINE#         105
+  C:0171H         LINE#         106
+  C:0172H         LINE#         108
+  C:0175H         LINE#         109
+  C:0178H         LINE#         110
+  C:0179H         LINE#         113
+  C:017CH         LINE#         114
+  C:017FH         LINE#         115
+  C:0180H         LINE#         117
+  C:0183H         LINE#         118
+  C:0186H         LINE#         119
+  C:0189H         LINE#         120
+  C:018AH         LINE#         122
+  C:018DH         LINE#         123
+  C:0190H         LINE#         124
+  C:0193H         LINE#         125
+  C:0194H         LINE#         127
+  C:0195H         LINE#         130
+BL51 BANKED LINKER/LOCATER V6.22.4.0        09/28/2023  15:24:22  PAGE 3
+
+
+  C:0197H         LINE#         131
+  C:0199H         LINE#         132
+  C:019CH         LINE#         135
+  C:019FH         LINE#         136
+  C:01A2H         LINE#         137
+  -------         ENDMOD        LAB03
+
+******************************************************************************
+>> 
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00A9H BYTE ( 8%) *
+>> 
+******************************************************************************
+>> 
+
+Program Size: data=8.0 xdata=0 code=419
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
