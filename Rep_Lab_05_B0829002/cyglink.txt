@@ -1,0 +1,1 @@
+"C:\Users\lms02\OneDrive\Dokumete\Lab05\Lab05.obj"  TO "C:\Users\lms02\OneDrive\Dokumete\Lab05\Lab05" RS(256) PL(68) PW(78) 

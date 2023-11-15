@@ -1,0 +1,93 @@
+C51 COMPILER V9.60.7.0   LAB04                                                             10/12/2023 16:40:08 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LAB04
+OBJECT MODULE PLACED IN Lab04.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe Lab04.c DB OE BR INCDIR(C:\SiLabs\MCU_2\Inc)
+
+line level    source
+
+   1          #include "C8051F040.h"
+   2          int N = 100;
+   3          void Port_Configuration () {
+   4   1              XBR2 = 0xc0;
+   5   1              P1MDIN = 0xff;
+   6   1              P2MDOUT = 0xff;
+   7   1      }//end of function Port_Configuration
+   8          
+   9          void Default_Config () {
+  10   1              //turn-off watch-dog timer
+  11   1              // disable watchdog timer
+  12   1              WDTCN = 0xde;
+  13   1              WDTCN = 0xad;
+  14   1      
+  15   1              //initialize SFR setup page
+  16   1              SFRPAGE = CONFIG_PAGE;                 // Switch to configuration page
+  17   1      
+  18   1              Port_Configuration ();
+  19   1      
+  20   1              //set to normal mode
+  21   1              SFRPAGE = LEGACY_PAGE;
+  22   1      }//end of function Default_Config
+  23          
+  24          int button_detect () {
+  25   1              int key_hold, key_release, count, button_state;
+  26   1              do {
+  27   2                      key_hold = P1;
+  28   2                      button_state = P1 ;     
+  29   2              } while (!key_hold);
+  30   1      
+  31   1              //Stage 2: wait for key released
+  32   1              key_release = 0;
+  33   1              count = N;
+  34   1              while (!key_release) {
+  35   2                      key_hold = P1; 
+  36   2                      key_hold ? count = N : (--count == 0 ? key_release = 1 : 1);
+  37   2              }//Stage 2: wait for key released
+  38   1              return button_state;
+  39   1      }//end of function button_detect ()
+  40          
+  41          int main () {
+  42   1              int status;
+  43   1              int button ;
+  44   1              Default_Config ();
+  45   1              P1 = 0;
+  46   1              status = 1;
+  47   1              P2 = status;
+  48   1              while (1) {
+  49   2                      button = button_detect();
+  50   2                      if (button == 1){
+  51   3                              if (status == 1){
+  52   4                                      status = 128;
+  53   4                              }
+  54   3                              else{
+  55   4                                      status = status >> 1;
+C51 COMPILER V9.60.7.0   LAB04                                                             10/12/2023 16:40:08 PAGE 2   
+
+  56   4                              }               
+  57   3                      }
+  58   2                      if (button == 2){
+  59   3                              if (status == 128){
+  60   4                                      status = 1;
+  61   4                              }
+  62   3                              else{
+  63   4                                      status = status << 1;
+  64   4                              }       
+  65   3                      }
+  66   2                      P2 = status     ;       
+  67   2              }//end while (1)
+  68   1      }//end of function main
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    171    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

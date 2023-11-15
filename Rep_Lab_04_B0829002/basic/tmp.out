@@ -1,0 +1,14 @@
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0 - SN: Eval Version
+COPYRIGHT (C) 1987-2021, Arm Limited or its Affiliates. All rights reserved.
+"C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04.obj"  TO "C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04" RS(256) PL(68) PW(78) 
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00AFH BYTE ( 8%) *
+******************************************************************************
+
+>> 
+>> 
+>> 
+Program Size: data=13.0 xdata=0 code=319
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

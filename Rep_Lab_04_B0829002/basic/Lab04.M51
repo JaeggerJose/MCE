@@ -1,0 +1,189 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0          10/12/2023  16:40:09  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04.ob
+>> j TO C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04 RS (256) PL (68) PW
+>>  (78)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04.obj (LAB04)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04 (LAB04
+>> )
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?LAB04
+            DATA    000AH     0002H     UNIT         _DATA_GROUP_
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0059H     UNIT         ?PR?MAIN?LAB04
+            CODE    08E5H     0038H     UNIT         ?PR?BUTTON_DETECT?LAB04
+            CODE    091DH     0010H     UNIT         ?PR?DEFAULT_CONFIG?LAB04
+            CODE    092DH     000AH     UNIT         ?PR?PORT_CONFIGURATION?LA
+>> B04
+            CODE    0937H     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04 (L
+>> AB04)
+
+
+SEGMENT                                DATA_GROUP 
+  +--> CALLED SEGMENT                START    LENGTH
+----------------------------------------------------
+?C_C51STARTUP                        -----    -----
+  +--> ?PR?MAIN?LAB04
+  +--> ?C_INITSEG
+
+?PR?MAIN?LAB04                       -----    -----
+  +--> ?PR?DEFAULT_CONFIG?LAB04
+  +--> ?PR?BUTTON_DETECT?LAB04
+
+?PR?DEFAULT_CONFIG?LAB04             -----    -----
+  +--> ?PR?PORT_CONFIGURATION?LAB04
+
+?PR?BUTTON_DETECT?LAB04              000AH    0002H
+
+
+
+SYMBOL TABLE OF MODULE:  C:\Users\lms02\OneDrive\Dokumete\Lab04\basic\Lab04 (L
+>> AB04)
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0        10/12/2023  16:40:09  PAGE 2
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LAB04
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00FFH         PUBLIC        WDTCN
+  D:00A0H         PUBLIC        P2
+  C:091DH         PUBLIC        Default_Config
+  D:00E8H         PUBLIC        ADC0CN
+  D:0084H         PUBLIC        SFRPAGE
+  D:00E8H         PUBLIC        ADC2CN
+  D:00A8H         PUBLIC        IE
+  D:00A6H         PUBLIC        P2MDOUT
+  D:00F8H         PUBLIC        CAN0CN
+  D:00D8H         PUBLIC        PCA0CN
+  D:00B8H         PUBLIC        IP
+  D:00E3H         PUBLIC        XBR2
+  D:00C0H         PUBLIC        SMB0CN
+  C:088CH         PUBLIC        main
+  D:0088H         PUBLIC        CPT0CN
+  D:00ADH         PUBLIC        P1MDIN
+  D:0088H         PUBLIC        CPT1CN
+  D:0088H         PUBLIC        CPT2CN
+  D:00F8H         PUBLIC        SPI0CN
+  D:0088H         PUBLIC        TCON
+  D:00C8H         PUBLIC        TMR2CN
+  D:00C8H         PUBLIC        TMR3CN
+  D:00C8H         PUBLIC        TMR4CN
+  D:0008H         PUBLIC        N
+  D:0098H         PUBLIC        SCON0
+  D:0098H         PUBLIC        SCON1
+  C:092DH         PUBLIC        Port_Configuration
+  D:00C0H         PUBLIC        CAN0STA
+  D:00D0H         PUBLIC        PSW
+  C:08E5H         PUBLIC        button_detect
+  -------         PROC          PORT_CONFIGURATION
+  C:092DH         LINE#         3
+  C:092DH         LINE#         4
+  C:0930H         LINE#         5
+  C:0933H         LINE#         6
+  C:0936H         LINE#         7
+  -------         ENDPROC       PORT_CONFIGURATION
+  -------         PROC          DEFAULT_CONFIG
+  C:091DH         LINE#         9
+  C:091DH         LINE#         12
+  C:0920H         LINE#         13
+  C:0923H         LINE#         16
+  C:0926H         LINE#         18
+  C:0929H         LINE#         21
+  C:092CH         LINE#         22
+  -------         ENDPROC       DEFAULT_CONFIG
+  -------         PROC          BUTTON_DETECT
+  -------         DO            
+  D:0006H         SYMBOL        key_hold
+  D:0004H         SYMBOL        key_release
+  D:0002H         SYMBOL        count
+  D:000AH         SYMBOL        button_state
+  -------         ENDDO         
+  C:08E5H         LINE#         24
+  C:08E5H         LINE#         26
+  C:08E5H         LINE#         27
+  C:08E9H         LINE#         28
+  C:08F0H         LINE#         29
+  C:08F3H         LINE#         32
+BL51 BANKED LINKER/LOCATER V6.22.4.0        10/12/2023  16:40:09  PAGE 3
+
+
+  C:08F6H         LINE#         33
+  C:08FAH         LINE#         34
+  C:08FEH         LINE#         35
+  C:0901H         LINE#         36
+  C:0918H         LINE#         38
+  C:091CH         LINE#         39
+  -------         ENDPROC       BUTTON_DETECT
+  -------         PROC          MAIN
+  -------         DO            
+  D:0082H         SYMBOL        status
+  D:0004H         SYMBOL        button
+  -------         ENDDO         
+  C:088CH         LINE#         41
+  C:088CH         LINE#         44
+  C:088FH         LINE#         45
+  C:0892H         LINE#         46
+  C:0895H         LINE#         47
+  C:0898H         LINE#         48
+  C:0898H         LINE#         49
+  C:089FH         LINE#         50
+  C:08A5H         LINE#         51
+  C:08ADH         LINE#         52
+  C:08B2H         LINE#         53
+  C:08B4H         LINE#         54
+  C:08B4H         LINE#         55
+  C:08C0H         LINE#         56
+  C:08C0H         LINE#         57
+  C:08C0H         LINE#         58
+  C:08C6H         LINE#         59
+  C:08CEH         LINE#         60
+  C:08D3H         LINE#         61
+  C:08D5H         LINE#         62
+  C:08D5H         LINE#         63
+  C:08E0H         LINE#         64
+  C:08E0H         LINE#         65
+  C:08E0H         LINE#         66
+  C:08E3H         LINE#         67
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        LAB04
+
+******************************************************************************
+>> 
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00AFH BYTE ( 8%) *
+>> 
+******************************************************************************
+>> 
+
+Program Size: data=13.0 xdata=0 code=319
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

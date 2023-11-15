@@ -1,0 +1,159 @@
+C51 COMPILER V9.60.7.0   LAB04_BONUS                                                       10/12/2023 16:44:31 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LAB04_BONUS
+OBJECT MODULE PLACED IN Lab04_bonus.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe Lab04_bonus.c DB OE BR INCDIR(C:\SiLabs\MCU_2\Inc)
+
+line level    source
+
+   1          #include "C8051F040.h"
+   2          
+   3          int N = 100;
+   4          int status;
+   5          int count;
+   6          int tmp, tmp_status;
+   7          int type;
+   8          void Timer0_ISR ();
+   9          
+  10          void Port_Configuration () {
+  11   1              //initialize SFR setup page
+  12   1              SFRPAGE = CONFIG_PAGE;                 // Switch to configuration page
+  13   1      
+  14   1              //setup the cross-bar and configure the I/O ports
+  15   1              XBR2 = 0xc0;
+  16   1              P2MDOUT = 0xff;
+  17   1      
+  18   1              //set to normal mode
+  19   1              SFRPAGE = LEGACY_PAGE;
+  20   1      }//end of function Port_Configuration
+  21          
+  22          void Timer_Configuration () {
+  23   1              // SETTING THE TIMER WORKING MODE
+  24   1              TMOD = 0x01;
+  25   1              TCON = 0x10;
+  26   1              CKCON = 0x10;
+  27   1      
+  28   1              IE = 0x82;
+  29   1              TL0 = 0;
+  30   1              TH0 = 0;
+  31   1      }//end of function Timer_Configuration
+  32          
+  33          void Config () {
+  34   1              //turn-off watch-dog timer
+  35   1              WDTCN = 0xde;
+  36   1              WDTCN = 0xad;
+  37   1      
+  38   1              OSCICN = 0x83;
+  39   1              CLKSEL = 0x00;
+  40   1      
+  41   1              Port_Configuration ();
+  42   1      
+  43   1              Timer_Configuration ();
+  44   1      }//end of function Default_Config
+  45          int button_detect () {
+  46   1              int key_hold, key_release;
+  47   1              int count;
+  48   1              int button_status;
+  49   1              do {
+  50   2                      key_hold = P1;
+  51   2                      button_status = P1 ;     
+  52   2              } while (!key_hold);
+  53   1      
+  54   1              //Stage 2: wait for key released
+  55   1              key_release = 0;
+C51 COMPILER V9.60.7.0   LAB04_BONUS                                                       10/12/2023 16:44:31 PAGE 2   
+
+  56   1              count = N;
+  57   1              while (!key_release) {
+  58   2                      key_hold = P1;
+  59   2                      if (key_hold) {
+  60   3                              count = N;
+  61   3                      }
+  62   2                      else {
+  63   3                              --count == 0 ? key_release = 1 : 1;
+  64   3                      }
+  65   2              }//Stage 2: wait for key released
+  66   1              return button_status;
+  67   1      }
+  68          
+  69          int main () {
+  70   1              int button ; 
+  71   1              Config (); // config setting
+  72   1              status = 1;
+  73   1              count = 0;
+  74   1              type = 0;
+  75   1              P1 = 0;
+  76   1              P2 = status;
+  77   1              while (1) {
+  78   2                      button = button_detect();
+  79   2                      if (button == 1) {
+  80   3                               type = type +1;
+  81   3                               if(type ==4) {
+  82   4                                      type =0;
+  83   4                                      }
+  84   3                              }
+  85   2              }//end while (1)
+  86   1      }//end of function main
+  87          
+  88          void Timer0_ISR () interrupt 1{
+  89   1              count++;
+  90   1              tmp_status = status;
+  91   1              if (count == 4) {
+  92   2                      count = 0;
+  93   2                      if (type == 0 ){
+  94   3                              if (status == 1){ 
+  95   4                                      status=128;
+  96   4                              }
+  97   3                              else{
+  98   4                                      status = status>>1;
+  99   4                              }
+ 100   3                      } else if (type == 1) {
+ 101   3                              if (status==128){ 
+ 102   4                                      status=1;
+ 103   4                              }
+ 104   3                              else{
+ 105   4                                      status = status<<1;
+ 106   4                              }
+ 107   3                      } else if (type == 2) {
+ 108   3                              //event even bit blinck
+ 109   3                              P2 = 170;
+ 110   3                              TH0 = 0;
+ 111   3                              TL0 = 0;
+ 112   3                              count = 0;
+ 113   3                              return;
+ 114   3                      } else if (type == 3) {
+ 115   3                              //event odd bit blinck
+ 116   3                              P2 = 85;
+ 117   3                              TH0 = 0;
+C51 COMPILER V9.60.7.0   LAB04_BONUS                                                       10/12/2023 16:44:31 PAGE 3   
+
+ 118   3                              TL0 = 0;
+ 119   3                              count = 0;
+ 120   3                              return;
+ 121   3                      }
+ 122   2                      P2 = status;
+ 123   2              } else if (count == 2 && (type == 2 || type == 3)) {
+ 124   2                      P2 = 00000000;
+ 125   2              }
+ 126   1      
+ 127   1              TH0 = 0;
+ 128   1              TL0 = 0;
+ 129   1      }//end of function Timer0_ISR
+ 130          
+ 131          
+ 132          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    333    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

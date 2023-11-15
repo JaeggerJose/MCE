@@ -1,0 +1,405 @@
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LAB05
+OBJECT MODULE PLACED IN Lab05.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\c51.exe Lab05.c DB OE BR INCDIR(C:\SiLabs\MCU_2\Inc)
+
+line level    source
+
+   1          /*******************************************************************************
+   2           *
+   3           * the LCD infrastructure module
+   4           *
+   5           ******************************************************************************/
+   6          
+   7          #include "C8051F040.h"
+   8          #include "LCD.h"
+   9          #include <stdio.h>
+  10          #include <string.h>
+  11          
+  12          char LCD_status;
+  13          
+  14          void
+  15          LCD_PortConfig ()
+  16          {
+  17   1              //initialize SFR setup page
+  18   1              SFRPAGE = CONFIG_PAGE;                 // Switch to configuration page
+  19   1      
+  20   1              //setup the cross-bar and configure the I/O ports
+  21   1              XBR2 = 0xc0;
+  22   1              P3MDOUT = 0x3f;
+  23   1              P1MDIN = 0xff;
+  24   1      
+  25   1              //set to normal mode
+  26   1              SFRPAGE = LEGACY_PAGE;
+  27   1      }//end of function LCD_PortConfig ()
+  28          
+  29          /****************
+  30          The delay_lcd seem to be not long enough. 
+  31          Try to change the default value as 10000...
+  32          ****************/
+  33          unsigned int delay_lcd=1000;
+  34          
+  35          void
+  36          LCD_Delay ()
+  37          {
+  38   1              int i;
+  39   1              for (i=0;i<delay_lcd;i++); // wait for a long enough time...
+  40   1      }
+  41          
+  42          void
+  43          LCD_SendCommand (char cmd);
+  44          
+  45          void
+  46          LCD_Init ()
+  47          {
+  48   1              LCD_SendCommand(0x02);        // Initialize as 4-bit mode
+  49   1              LCD_SendCommand (0x28);         //Display function: 2 rows for 4-bit data, small 
+  50   1              LCD_SendCommand (0x0e);         //display and curson ON, curson blink off
+  51   1              LCD_SendCommand (0x01);         //clear display, cursor to home
+  52   1              //LCD_SendCommand (0x10);               //cursor shift left
+  53   1              //LCD_SendCommand (0x06);               //cursor increment, shift off
+  54   1      }
+  55          
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 2   
+
+  56          void
+  57          LCD_Status_SetRS ()
+  58          {
+  59   1              LCD_status = LCD_status | 1;
+  60   1      }
+  61          
+  62          void
+  63          LCD_Status_ClearRS ()
+  64          {
+  65   1              LCD_status = LCD_status & 0xfe;
+  66   1      }
+  67          
+  68          void
+  69          LCD_Status_SetWord (char word)
+  70          {
+  71   1              word = word & 0x0f;
+  72   1              LCD_status = LCD_status & 0x03;
+  73   1              LCD_status = LCD_status | (word<<2);
+  74   1      }
+  75          
+  76          void
+  77          LCD_Status_SetEnable ()
+  78          {
+  79   1              LCD_status = LCD_status | 0x02;
+  80   1      }
+  81          
+  82          
+  83          void
+  84          LCD_Status_ClearEnable ()
+  85          {
+  86   1              LCD_status = LCD_status & 0xfd;
+  87   1      }
+  88          
+  89          
+  90          void
+  91          LCD_SendCommand (char cmd)
+  92          {
+  93   1              LCD_Status_ClearRS ();
+  94   1      
+  95   1              ///send the higher half
+  96   1              LCD_Status_SetWord ((cmd>>4) & 0x0f);
+  97   1              LCD_Status_SetEnable ();
+  98   1              P3 = LCD_status;
+  99   1              LCD_Delay ();
+ 100   1              LCD_Status_ClearEnable ();
+ 101   1              P3 = LCD_status;
+ 102   1              LCD_Delay ();
+ 103   1      
+ 104   1              ///send the lower half
+ 105   1              LCD_Status_SetWord (cmd&0x0f);
+ 106   1              LCD_Status_SetEnable ();
+ 107   1              P3 = LCD_status;
+ 108   1              LCD_Delay ();
+ 109   1              LCD_Status_ClearEnable ();
+ 110   1              P3 = LCD_status;
+ 111   1              LCD_Delay ();
+ 112   1      }
+ 113          
+ 114          void
+ 115          LCD_SendData (char dat)
+ 116          {
+ 117   1              LCD_Status_SetRS ();
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 3   
+
+ 118   1      
+ 119   1              ///send the higher half
+ 120   1              LCD_Status_SetWord ((dat>>4) & 0x0f);
+ 121   1              LCD_Status_SetEnable ();
+ 122   1              P3 = LCD_status;
+ 123   1              LCD_Delay ();
+ 124   1              LCD_Status_ClearEnable ();
+ 125   1              P3 = LCD_status;
+ 126   1              LCD_Delay ();
+ 127   1      
+ 128   1              ///send the lower half
+ 129   1              LCD_Status_SetWord (dat&0x0f);
+ 130   1              LCD_Status_SetEnable ();
+ 131   1              P3 = LCD_status;
+ 132   1              LCD_Delay ();
+ 133   1              LCD_Status_ClearEnable ();
+ 134   1              P3 = LCD_status;
+ 135   1              LCD_Delay ();
+ 136   1      }
+ 137          
+ 138          void
+ 139          LCD_ClearScreen ()
+ 140          {
+ 141   1              LCD_SendCommand (0x01);
+ 142   1      }
+ 143          
+ 144          void
+ 145          LCD_CursorLeft()
+ 146          {
+ 147   1              LCD_SendCommand (0x10);
+ 148   1      
+ 149   1      }
+ 150          
+ 151          void
+ 152          LCD_CursorRight()
+ 153          {
+ 154   1              LCD_SendCommand (0x14);
+ 155   1      
+ 156   1      }
+ 157          
+ 158          void 
+ 159          LCD_CursorTop()
+ 160          {
+ 161   1              LCD_SendCommand (0x02);
+ 162   1      }
+ 163          
+ 164          void
+ 165          LCD_CursorDown()
+ 166          {
+ 167   1              LCD_SendCommand (0xC0); 
+ 168   1      }
+ 169          
+ 170          void
+ 171          Shutup_WatchDog ()
+ 172          {
+ 173   1              WDTCN = 0xde;
+ 174   1              WDTCN = 0xad;
+ 175   1      }//end of function Shutup_WatchDog
+ 176          int 
+ 177          button_detect ()
+ 178          {
+ 179   1              int key_hold;
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 4   
+
+ 180   1              int key_release;
+ 181   1              int count;
+ 182   1              int button_state;
+ 183   1              do {
+ 184   2      ,               key_hold = P1;
+*** ERROR C141 IN LINE 184 OF Lab05.c: syntax error near ',', expected 'hdata'
+ 185   2                      //button_state = key_hold;
+ 186   2                      button_state = P1 ;     
+ 187   2              } while (!key_hold);
+ 188   1      
+ 189   1              //Stage 2: wait for key released
+ 190   1              key_release = 0;
+ 191   1              count = 100;
+ 192   1              while (!key_release) {
+ 193   2                      key_hold = P1; 
+ 194   2                      if (key_hold) {
+ 195   3                              count = 10;
+ 196   3                      }
+ 197   2                      else {
+ 198   3                              count--;
+ 199   3                              if (count==0) {
+ 200   4                                      key_release = 1;
+ 201   4                              }
+ 202   3                      }
+ 203   2              }//Stage 2: wait for key released
+ 204   1              return button_state;
+ 205   1      }//end of function button_detect ()
+ 206          
+ 207          void
+ 208          main ()
+ 209          {
+ 210   1              int i;     // for loop    
+ 211   1              int button_push; 
+ 212   1              int line = 1;// 1 and 2
+ 213   1              int CursorPos = 0;
+ 214   1              
+ 215   1              char str[16] = "";
+ 216   1              char str2[16] = "";
+ 217   1              char strTmp[16] = "";
+ 218   1              
+ 219   1              Shutup_WatchDog ();
+ 220   1              LCD_PortConfig ();
+ 221   1              LCD_Init ();
+ 222   1              P1 = 0;
+ 223   1              LCD_ClearScreen ();
+ 224   1      
+ 225   1              for (i=0 ; i<16 ; i++){
+ 226   2                      str[i] = ' ';
+ 227   2                      str2[i] = ' ';
+ 228   2              }
+ 229   1              
+ 230   1              while (1){
+ 231   2                      button_push = button_detect(); 
+ 232   2      
+ 233   2                      // print string
+ 234   2                      if (button_push == 1 && CursorPos < 16){
+ 235   3                              if (line == 1){       // judge which line
+ 236   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 237   5                                              str[i] = str[i-1];
+ 238   5                                      } 
+ 239   4                                      str[CursorPos] = 'A';
+ 240   4                              }
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 5   
+
+ 241   3                              else{
+ 242   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 243   5                                              str2[i] = str2[i-1];
+ 244   5                                      }
+ 245   4                                      str2[CursorPos] = 'A';
+ 246   4                              }
+ 247   3                              LCD_SendData ('A');
+ 248   3                              CursorPos += 1;
+ 249   3                              for (i = CursorPos ; i<16 ; i++){
+ 250   4                                      if (line == 1)
+ 251   4                                              LCD_SendData(str[i]);
+ 252   4                                      else
+ 253   4                                              LCD_SendData(str2[i]);
+ 254   4                              }
+ 255   3                              for (i = 15 ; i >= CursorPos ; i--){
+ 256   4                                      LCD_CursorLeft();
+ 257   4                              }
+ 258   3                      }
+ 259   2                      else if (button_push == 2 && CursorPos < 16){
+ 260   3                              if (line == 1){       // judge which line
+ 261   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 262   5                                              str[i] = str[i-1];
+ 263   5                                      } 
+ 264   4                                      str[CursorPos] = 'B';
+ 265   4                              }
+ 266   3                              else{
+ 267   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 268   5                                              str2[i] = str2[i-1];
+ 269   5                                      }
+ 270   4                                      str2[CursorPos] = 'B';
+ 271   4                              }
+ 272   3                              LCD_SendData ('B');
+ 273   3                              CursorPos += 1;
+ 274   3                              for (i = CursorPos ; i<16 ; i++){
+ 275   4                                      if (line == 1)
+ 276   4                                              LCD_SendData(str[i]);
+ 277   4                                      else
+ 278   4                                              LCD_SendData(str2[i]);
+ 279   4                              }
+ 280   3                              for (i = 15 ; i >= CursorPos ; i--){
+ 281   4                                      LCD_CursorLeft();
+ 282   4                              }
+ 283   3                      }
+ 284   2                      else if (button_push == 4 && CursorPos < 16){
+ 285   3                              if (line == 1){       // judge which line
+ 286   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 287   5                                              str[i] = str[i-1];
+ 288   5                                      } 
+ 289   4                                      str[CursorPos] = 'C';
+ 290   4                              }
+ 291   3                              else{
+ 292   4                                      for (i = 15 ; i>= CursorPos ; i--){
+ 293   5                                              str2[i] = str2[i-1];
+ 294   5                                      }
+ 295   4                                      str2[CursorPos] = 'C';
+ 296   4                              }
+ 297   3                              LCD_SendData ('C');
+ 298   3                              CursorPos += 1;
+ 299   3                              for (i = CursorPos ; i<16 ; i++){
+ 300   4                                      if (line == 1)
+ 301   4                                              LCD_SendData(str[i]);
+ 302   4                                      else
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 6   
+
+ 303   4                                              LCD_SendData(str2[i]);
+ 304   4                              }
+ 305   3                              for (i = 15 ; i >= CursorPos ; i--){
+ 306   4                                      LCD_CursorLeft();
+ 307   4                              }
+ 308   3                      }
+ 309   2                              else if (button_push == 8){
+ 310   3                              /*
+ 311   3                                      Implement the `new-line’ key
+ 312   3                                      Change to the next line if a new-line button is pressed at Line 1
+ 313   3                                      Scroll the screen if a new-line button is pressed at Line 2
+ 314   3                              */
+ 315   3                              if(line == 1){
+ 316   4                                      LCD_CursorDown();
+ 317   4                                      for (i = 0 ; i < CursorPos ; i++){
+ 318   5                                              LCD_CursorRight();
+ 319   5                                      }
+ 320   4                                      line = 2;
+ 321   4                                      LCD_SendCommand (0xC0);
+ 322   4                              }
+ 323   3                              else{
+ 324   4                                      // line 2 scroll down, replace the first line with the second line and clear the second line
+ 325   4                                      for (i = 0 ; i < 16 ; i++){
+ 326   5                                              str[i] = str2[i];
+ 327   5                                              str2[i] = ' ';
+ 328   5                                      }
+ 329   4                                      LCD_ClearScreen();
+ 330   4                                      CursorPos = 0;
+ 331   4                                      LCD_CursorTop();
+ 332   4                                      for (i = 0 ; i < 16 ; i++){
+ 333   5                                              LCD_SendData(str[i]);
+ 334   5                                      }
+ 335   4                                      LCD_CursorDown();
+ 336   4                                      for (i = 0 ; i < 16 ; i++){
+ 337   5                                              LCD_SendData(str2[i]);
+ 338   5                                      }
+ 339   4      
+ 340   4      
+ 341   4                                      
+ 342   4                                      LCD_SendCommand (0xC0);
+ 343   4                              }
+ 344   3                      }
+ 345   2      
+ 346   2      
+ 347   2                      // move cursor 
+ 348   2      
+ 349   2                      else if (button_push == 16){
+ 350   3                              if (CursorPos<16){
+ 351   4                                      LCD_CursorRight();
+ 352   4                                      CursorPos += 1;
+ 353   4                              }
+ 354   3                      }
+ 355   2                      else if (button_push == 32){
+ 356   3                              if (CursorPos>-1){
+ 357   4                                      LCD_CursorLeft();
+ 358   4                                      CursorPos -= 1;
+ 359   4                              }
+ 360   3                      }
+ 361   2                      else if (button_push == 64){
+ 362   3                              if(line == 2){
+ 363   4                                      LCD_CursorTop();
+ 364   4                                      for (i = 0 ; i < CursorPos ; i++){
+C51 COMPILER V9.60.7.0   LAB05                                                             11/09/2023 14:44:24 PAGE 7   
+
+ 365   5                                              LCD_CursorRight();
+ 366   5                                      }
+ 367   4                                      line = 1;
+ 368   4                              }
+ 369   3                      }
+ 370   2                      else if (button_push == 128){
+ 371   3                              if(line == 1){
+ 372   4                                      LCD_CursorDown();
+ 373   4                                      for (i = 0 ; i < CursorPos ; i++){
+ 374   5                                              LCD_CursorRight();
+ 375   5                                      }
+ 376   4                                      line = 2;
+ 377   4                              }
+ 378   3                      }
+ 379   2              };
+ 380   1      
+ 381   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
